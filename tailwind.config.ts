@@ -8,10 +8,18 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      screens: {
+        "sm": "640px",
+        "md": "768px",
+        "lg": "1024px",
+        "xl": "1176px",
       },
+      colors: {
+        "geist-sans": "#000000",
+      },
+      backgroundImage: {
+        "hero-bg": "url('/assets/images/png/homepage-bg.png')",
+      }
     },
   },
   plugins: [],
