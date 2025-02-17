@@ -1,4 +1,4 @@
-"use client"; // Ensure you're using client-side rendering  
+"use client";  
 import { useRouter } from 'next/navigation';
 
 export default function Home() {

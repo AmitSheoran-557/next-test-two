@@ -1,97 +1,143 @@
-"use client"
-import React, { useEffect, useState } from 'react';  
-import { gsap } from 'gsap';  
+"use client";  
+import Image from "next/image";  
+import React, { useEffect } from "react";  
+import { gsap } from "gsap";  
+import { ScrollTrigger } from "gsap/ScrollTrigger";  
+gsap.registerPlugin(ScrollTrigger);  
 
-const Page = () => {  
-    const HERO_DATA_LIST = [  
-        {  
-            count: "01",  
-            title: "AI Chatbots don’t create enterprise-grade apps",  
-            description: "Bootstrap end to end application package including architecture, tests, infrastructure and deployment code leveraging AdaptsAI’s patented engine. Your apps are secure by design and by default.",  
-            image: "/assets/images/png/slider-img-1.png"  
-        },  
-        {  
-            count: "02",  
-            title: "Modernization Doesn’t Have to Mean Failure",  
-            description: "Traditional app modernization often falls short because teams are forced to navigate poorly documented legacy code — an outdated maze that slows progress and drives up costs. It’s time to change the narrative.",  
-            descriptionTwo: "The execution can neither compromise on business and technical requirements nor lose sight of modern architecture and security.",  
-            image: "/assets/images/png/slider-img-2.png"  
-        },  
-        {  
-            count: "03",  
-            title: "Protected from Legal Risks and IP Liability",  
-            description: "AdaptsAI ensures IP protection by generating custom, original code with no direct replication of copyrighted material. Our LLM engine delivers unique, optimized solutions while maintaining high quality. Users can trust their codebases are free from IP risks, enabling secure, responsible AI innovation.",  
-            image: "/assets/images/png/slider-img-3.png"  
-        },  
-        {  
-            count: "04",  
-            title: "AI Generated Apps Need Maintenance Too!",  
-            description: "Business applications demand ongoing maintenance to address new vulnerabilities, ensure reliability, and deliver updates or bug fixes.",  
-            descriptionTwo: "With AdaptsAI’s advanced context awareness, maintenance becomes effortless—minimizing code ramp-up time, streamlining troubleshooting, and simplifying enhancements for maximum efficiency.",  
-            image: "/assets/images/png/slider-img-4.png"  
-        }  
-    ];  
-
-    const [currentIndex, setCurrentIndex] = useState(0);  
-    const totalSlides = HERO_DATA_LIST.length;  
-
-    const handleNext = () => {  
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);  
-    };  
-
-    const handlePrev = () => {  
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + totalSlides) % totalSlides);  
-    };  
-
+const Slider = () => {  
     useEffect(() => {  
-        const interval = setInterval(() => {  
-            handleNext();  
-        }, 5000); // Change slide every 5 seconds  
-        return () => clearInterval(interval);  
+        const slider = gsap.timeline({  
+            scrollTrigger: {  
+                trigger: ".slider-section",  
+                start: "top top",  
+                end: "200%",  
+                scrub: 1,  
+                pin: true,  
+                onUpdate: (self) => {  
+                    const progress = self.progress * 3;  
+                    gsap.to(".progress-bar", { width: `${Math.min(progress * 100, 100)}%` });  
+
+                    gsap.to(".progress-marker", {  
+                        scale: 0.5,  
+                        opacity: 0,  
+                        overwrite: true  
+                    });  
+
+                    const activeIndex = Math.floor(progress * 4);  
+                    gsap.to(`.progress-marker[data-index="${activeIndex + 1}"]`, {  
+                        scale: 1,  
+                        opacity: 1  
+                    });  
+                }  
+            },  
+        });  
+
+        slider.fromTo(  
+            ".slider-item", { x: "0%", }, { x: "-75%", }, "+=0.5"  
+        );  
     }, []);  
 
     return (  
-        <div className='bg-hero-bg bg-cover min-h-screen pt-[156px] pb-28 '>  
-            <div className="container mx-auto px-4">  
-                <h1 className='font-medium lg:text-5xl text-4xl text-center max-w-[830px] w-full text-white !leading-[120%] lg:mb-[60px] md:mb-10 mb-7 mx-auto'>Transforming Secure, Modern <span className='text-gradient'>Development</span> with AdaptsAI</h1>  
-                <div className="relative">  
-                    <div className="slider-content flex transition-transform" style={{ transform: `translateX(-${currentIndex * 100}%)`, width: `${totalSlides * 100}%` }}>  
-                        {HERO_DATA_LIST.map((item, index) => (  
-                            <div key={index} className="flex-shrink-0 w-full">  
-                                <div className="flex flex-wrap w-full">  
-                                    <div className="lg:w-6/12 w-full">  
-                                        <h4 className='font-medium lg:text-3xl text-2xl text-white !leading-[120%] mb-4'>{item.count}</h4>  
-                                        <h3 className='font-medium lg:text-3xl text-2xl text-white !leading-[120%] mb-4'>{item.title}</h3>  
-                                        <p className='font-medium lg:text-2xl text-xl text-white !leading-[120%] mb-4'>{item.description}</p>  
-                                        {item.descriptionTwo && (  
-                                            <p className='font-medium lg:text-2xl text-xl text-white !leading-[120%] mb-4'>{item.descriptionTwo}</p>  
-                                        )}  
-                                    </div>  
-                                    <div className="lg:w-6/12 w-full">  
-                                        <img className='max-w-[614px] w-full' src={item.image} alt="image" />  
+        <div className="bg-hero-bg slider-section min-h-screen overflow-hidden mx-auto flex justify-center items-center">  
+            <div className="flex flex-col justify-center items-center">  
+                <h2 className="font-medium text-5xl !leading-[120%] text-white text-center max-w-[830px] mx-auto">  
+                    Transforming Secure, Modern <span className="text-gradient">Development</span> with AdaptsAI  
+                </h2>  
+                <div className="overflow-hidden pt-[60px] max-w-[1440px]">  
+                    <div className="flex w-max slider-item left-0 ">  
+                        {/* Slider item 1 */}  
+                        <div className="xl:min-w-[1440px] w-full">  
+                            <div className={`flex max-lg:flex-col gap-[65px] items-center container max-w-[1140px] mx-auto`}>  
+                                <div className="flex flex-col max-w-[461px]">  
+                                    <Image src="/assets/images/webp/slider-count-1.webp" alt="slider-img-1" width={297} height={182} />  
+                                    <h4 className="font-bold leading-[39.01px] text-[32px] text-white max-lg:leading-[30px] max-lg:text-2xl max-sm:leading-[26px] max-sm:text-xl">  
+                                        AI Chatbots don’t create enterprise-grade <span className="text-gradient">apps</span>  
+                                    </h4>  
+                                    <p className="font-poppins max-sm:text-sm leading-[25px] max-sm:leading-5 text-white mt-4">  
+                                        Bootstrap end to end application package including architecture, tests, infrastructure and deployment code leveraging AdaptsAI’s patented engine. Your apps are secure by design and by default.  
+                                    </p>  
+                                </div>  
+                                <Image className="max-w-[614px] w-full" src="/assets/images/png/slider-img-1.png" alt="slider-img-1" width={614} height={417} />  
+                            </div>  
+                        </div>  
+                        {/* Slider item 2 */}  
+                        <div className="xl:min-w-[1440px] w-full">  
+                            <div className={`flex max-lg:flex-col gap-[65px] items-center container max-w-[1140px] mx-auto`}>  
+                                <div className="flex flex-col max-w-[461px]">  
+                                    <Image src="/assets/images/webp/slider-count-2.webp" alt="slider-img-2" width={297} height={182} />  
+                                    <h4 className="font-bold leading-[39.01px] text-[32px] text-white max-lg:leading-[30px] max-lg:text-2xl max-sm:leading-[26px] max-sm:text-xl">  
+                                        Modernization Doesn’t Have to Mean Failure  
+                                    </h4>  
+                                    <p className="font-poppins max-sm:text-sm leading-[25px] max-sm:leading-5 text-white mt-4">  
+                                        Traditional app modernization often falls short because teams are forced to navigate poorly documented legacy code—a maze that slows progress and drives up costs.  
+                                        It’s time to change the narrative. <br /> <br /> The execution can neither compromise on business and technical requirements nor lose sight of modern architecture and security.  
+                                    </p>  
+                                </div>  
+                                <Image className="max-w-[614px] w-full" src="/assets/images/png/slider-img-2.png" alt="slider-img-2" width={614} height={417} />  
+                            </div>  
+                        </div>  
+                        {/* Slider item 3 */}  
+                        <div className="xl:min-w-[1440px] w-full">  
+                            <div className={`flex max-lg:flex-col gap-[65px] items-center container max-w-[1140px] mx-auto`}>  
+                                <div className="flex flex-col max-w-[461px]">  
+                                    <Image src="/assets/images/webp/slider-count-3.webp" alt="slider-img-3" width={297} height={182} />  
+                                    <h4 className="font-bold leading-[39.01px] text-[32px] text-white max-lg:leading-[30px] max-lg:text-2xl max-sm:leading-[26px] max-sm:text-xl">  
+                                        Protected from Legal Risks and IP liability  
+                                    </h4>  
+                                    <p className="font-poppins max-sm:text-sm leading-[25px] max-sm:leading-5 text-white mt-4">  
+                                        AdaptsAI ensures IP protection by generating custom, original code with no direct replication of copyrighted material. Our LLM engine delivers unique, optimized solutions while maintaining high quality. Users can trust their codebases are free from IP risks, enabling secure, responsible AI innovation.  
+                                    </p>  
+                                </div>  
+                                <Image className="max-w-[614px] w-full" src="/assets/images/png/slider-img-3.png" alt="slider-img-3" width={614} height={417} />  
+                            </div>  
+                        </div>  
+                        {/* Slider item 4 */}  
+                        <div className="xl:min-w-[1440px] w-full">  
+                            <div className={`flex max-lg:flex-col gap-[65px] items-center container max-w-[1140px] mx-auto`}>  
+                                <div className="flex flex-col max-w-[461px]">  
+                                    <Image src="/assets/images/webp/slider-count-4.webp" alt="slider-img-4" width={297} height={182} />  
+                                    <h4 className="font-bold leading-[39.01px] text-[32px] text-white max-lg:leading-[30px] max-lg:text-2xl max-sm:leading-[26px] max-sm:text-xl">  
+                                        AI generated apps need maintenance too!  
+                                    </h4>  
+                                    <p className="font-poppins max-sm:text-sm leading-[25px] max-sm:leading-5 text-white mt-4">  
+                                        Business applications demand ongoing maintenance to address new vulnerabilities, ensure reliability, and deliver updates or bug fixes. <br /> <br /> With AdaptsAI's advanced context awareness, maintenance becomes effortless—minimizing code ramp-up time, streamlining troubleshooting, and simplifying enhancements for maximum efficiency.  
+                                    </p>  
+                                </div>  
+                                <Image className="max-w-[614px] w-full" src="/assets/images/png/slider-img-4.png" alt="slider-img-4" width={614} height={417} />  
+                            </div>  
+                        </div>  
+                    </div>  
+                </div>  
+
+                {/* Progress Bar */}  
+                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-10">  
+                    <div className="relative w-[300px] h-1 bg-white bg-opacity-20 rounded-full">  
+                        <div className="absolute h-full bg-gradient-to-r from-[#FFB800] to-[#FF8A00] rounded-full progress-bar"   
+                             style={{ width: "0%" }}></div>  
+                        
+                        {/* Progress markers */}  
+                        <div className="absolute top-1/2 -translate-y-1/2 left-0 -ml-3 w-full flex justify-between">  
+                            {[1, 2, 3, 4].map((item) => (  
+                                <div key={item} className="relative progress-marker" data-index={item}>  
+                                    <div className="w-6 h-6 bg-[#FFB800] rounded-full flex items-center justify-center   
+                                                  transition-all duration-300 scale-50 opacity-0">  
+                                        <Image   
+                                            src={`/assets/images/webp/slider-count-${item}.webp`}   
+                                            alt={`step-${item}`}  
+                                            width={16}  
+                                            height={16}  
+                                        />  
                                     </div>  
                                 </div>  
-                            </div>  
-                        ))}  
+                            ))}  
+                        </div>  
                     </div>  
-
-                    {/* Navigation Buttons */}  
-                    <button  
-                        onClick={handlePrev}  
-                        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center z-10"  
-                    >  
-                        ❮  
-                    </button>  
-                    <button  
-                        onClick={handleNext}  
-                        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center z-10"  
-                    >  
-                        ❯  
-                    </button>  
                 </div>  
+
             </div>  
         </div>  
     );  
 };  
 
-export default Page;
+export default Slider;
