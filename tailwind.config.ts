@@ -15,7 +15,7 @@ export default {
         "xl": "1176px",
       },
       colors: {
-        "geist-sans": "#000000",
+        "light-white": "#FAFAFA",
       },
       backgroundImage: {
         "hero-bg": "url('/assets/images/png/homepage-bg.png')",

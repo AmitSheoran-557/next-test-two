@@ -26,6 +26,7 @@ const ToDo: React.FC = () => {
             return;
         }
 
+       
         setEntries(prevEntries => [...prevEntries, data]);
         reset();
     };
